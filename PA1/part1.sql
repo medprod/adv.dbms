@@ -126,3 +126,8 @@ JOIN Employee e ON d.employee_id = e.employee_id
 JOIN Person pe2 ON e.person_id = pe2.person_id;
 
 SELECT * FROM review_info;
+
+--5c. violating the rating check constraint.
+INSERT INTO doctor_review(review_id, doctor_id, patient_id, review_date, rating, patient_review)
+VALUES(nextval('review_id_seq'), 2, 53, current_date, 'G', 'This is my family doctor. I recommend 100%.');
+
