@@ -131,3 +131,16 @@ SELECT * FROM review_info;
 INSERT INTO doctor_review(review_id, doctor_id, patient_id, review_date, rating, patient_review)
 VALUES(nextval('review_id_seq'), 2, 53, current_date, 'G', 'This is my family doctor. I recommend 100%.');
 
+--5d. updating a review
+UPDATE doctor_review 
+SET patient_review = 'It is hard to get an appointment with Dr. Matthew and he does not seem to care about his patients.', 
+rating = 'C'
+WHERE review_id = 1;
+
+SELECT * FROM review_info;
+
+--5e. delete a review
+DELETE FROM doctor_review
+WHERE review_id = 3;
+
+SELECT * FROM review_info;
