@@ -33,22 +33,6 @@ diagnosis_name, prescribed_date
 FROM CTE_pres_drug
 WHERE drug_price_rank IN (1,2) AND prescribed_rank = 1;
 
---15. PIVOT
-number of medicines for each manufacturer and supplier
-
-SELECT * FROM supplier; --supplier name
-SELECT * FROM medicine; --drug name
-SELECT * FROM manufacturer; --manufacturer name
-
-SELECT s.name AS supplier_name, man.name AS manufacturer_name, 
-COUNT(*) AS total_medicines
-FROM Medicine m
-JOIN Supplier s ON m.supplier_id = s.supplier_id
-JOIN Manufacturer man ON m.manufacturer_id = man.manufacturer_id
-GROUP BY s.name, man.name
-ORDER BY s.name, man.name
-
-
 --17. aggregates, date differences, grouping
 patients with more than 1 appointment
 average days between appointment 
