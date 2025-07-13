@@ -34,11 +34,11 @@ ORDER BY m.marital_status, e.ethnicity;
 
 
 --11.RANK, GROUP BY
-SELECT * FROM urinalysis
-SELECT * FROM lab
-SELECT * FROM appointment
-SELECT * FROM patient
-SELECT * FROM person
+SELECT * FROM urinalysis;
+SELECT * FROM lab;
+SELECT * FROM appointment;
+SELECT * FROM patient;
+SELECT * FROM person;
 
 CREATE SEQUENCE person_id_seq 
 AS integer
@@ -86,7 +86,7 @@ CTE_ageGroups AS(
 	protein,
 	RANK() OVER (ORDER BY protein DESC) as protein_rank
 	FROM CTE_ageGroups 
-	GROUP BY age_group, protein
+	GROUP BY age_group, protein;
 
 
 --using dense_rank function
@@ -111,12 +111,4 @@ CTE_ageGroups AS(
 	protein,
 	DENSE_RANK() OVER (ORDER BY protein DESC) as protein_rank
 	FROM CTE_ageGroups 
-	GROUP BY age_group, protein
-
-
-
-
-
-
-	
-
+	GROUP BY age_group, protein;
