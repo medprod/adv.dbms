@@ -1,5 +1,6 @@
 --Part 1. The Terrier Hospital Schema, DML and DDL
 SET search_path = terrier_hospital;
+
 --1a. Select all data from the Doctor table and review it.
 SELECT * FROM terrier_hospital.doctor;
 
