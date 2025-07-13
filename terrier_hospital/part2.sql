@@ -33,7 +33,7 @@ LEFT JOIN appointment_type ate ON a.appointment_type_id = ate.appointment_type_i
 LEFT JOIN lab l ON a.lab_id = l.lab_id
 LEFT JOIN blood_test bt ON l.blood_test_id = bt.blood_test_id
 WHERE ate.description = 'Comprehensive examination to assess overall health'
-ORDER BY a.scheduled_for, PatientName
+ORDER BY a.scheduled_for, PatientName;
 
 --7. subqueries and joins
 SELECT * FROM appointment;
@@ -70,9 +70,9 @@ LEFT JOIN appointment_prescription ap ON a.appointment_id = ap.appointment_id
 JOIN prescription pr ON ap.prescription_id = pr.prescription_id);
 
 --let's add some data for those appointments without prescription
-SELECT * FROM appointment_diagnosis
-SELECT * FROM diagnosis
-SELECT * FROM appointment
+SELECT * FROM appointment_diagnosis;
+SELECT * FROM diagnosis;
+SELECT * FROM appointment;
 
 INSERT INTO appointment_diagnosis(appointment_id, diagnosis_code)
 VALUES(100, 1), 
