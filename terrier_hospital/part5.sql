@@ -50,16 +50,4 @@ WITH CTE_drug_rank AS(
 --choosing the suppliers where the drug price is ranked 1 or 2 (as it is top 2 most expensive drugs)
 SELECT medical_supplier, drug_name, drug_price, manufacturer_name
 FROM CTE_drug_rank
-WHERE drug_price_rank IN (1,2)
-
-
-
-
-
-
-
-
-
-
-
-
+WHERE drug_price_rank IN (1,2);
