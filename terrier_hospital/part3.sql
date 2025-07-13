@@ -1,13 +1,6 @@
 SET search_path = terrier_hospital;
 
 --8. aggregates, joins, group by
-count number of blood tests for employees who performed them
-first and last name of all employee
-department
-hospital where they work
-number of blood tests performed 
-filter on employees who performed a total of 5 or more tests
-
 SELECT * FROM blood_test
 SELECT * from employee
 SELECT * FROM Person
@@ -27,6 +20,10 @@ JOIN hospital h ON d.hospital_id = h.hospital_id
 GROUP BY employee_name, department_name, hospital_name
 HAVING COUNT(*) >= 5
 
+
+--9. aggregates, date differences, grouping
+doctors + number of appointments they have
+group by appointment type and month of appointment for the year (for my choice)
 
 
 
