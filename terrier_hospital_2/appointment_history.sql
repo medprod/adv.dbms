@@ -7,6 +7,7 @@ CREATE SEQUENCE appointment_history_seq AS integer
 START WITH 1
 INCREMENT BY 1;
 
+--create table appointment_history
 CREATE TABLE appointment_history(
 	appointment_history_id int PRIMARY KEY NOT NULL DEFAULT nextval('appointment_history_seq'),
 	update_type varchar(255) NOT NULL,
@@ -72,8 +73,8 @@ SELECT
     a.appointment_type_id,
     at.type AS appointment_type,
     p.patient_id,
-    pp.first_name,
-    pp.last_name,
+    per.first_name,
+    per.last_name,
     d.doctor_id,
     doc_person.first_name,
     doc_person.last_name,
@@ -81,7 +82,6 @@ SELECT
     h.name,
     ast.appointment_status_id,
     ast.status,
-    -- aggregated diagnosis data
 	ad.diagnosis_code,
 	diag.diagnosis AS diagnosis_name,
     l.lab_id,
@@ -89,7 +89,7 @@ SELECT
     m.medicine_id
 FROM appointment a
 JOIN patient p ON a.patient_id = p.patient_id
-JOIN person pp ON p.person_id = pp.person_id
+JOIN person per ON p.person_id = per.person_id
 JOIN doctor d ON a.doctor_id = d.doctor_id
 JOIN employee e ON d.employee_id = e.employee_id
 JOIN person doc_person ON e.person_id = doc_person.person_id
@@ -106,4 +106,4 @@ LEFT JOIN medicine m ON pr.medicine_id = m.medicine_id
 
 --Displaying data pulled from appointment table
 SELECT * FROM appointment_history
-ORDER BY appointment_id
+ORDER BY appointment_id;
