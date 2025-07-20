@@ -1,6 +1,6 @@
---2. Trigger to prevent deletions from the table
 SET SEARCH_PATH = terrier_hospital;
 
+--2. Trigger to prevent deletions from the table
 SELECT * FROM appointment_history;
 
 --first, we define a trigger function
