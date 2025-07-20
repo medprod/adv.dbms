@@ -179,5 +179,4 @@ SELECT * FROM appointment
 WHERE appointment_id = 611;
 
 --ran this to check history table and history table also has DELETE record now.
-SELECT * FROM appointment_history 
-ORDER BY appointment_history_id DESC;
+SELECT * FROM appointment_history ORDER BY appointment_history_id DESC;
