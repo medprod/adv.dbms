@@ -106,4 +106,4 @@ LEFT JOIN medicine m ON pr.medicine_id = m.medicine_id
 
 --Displaying data pulled from appointment table
 SELECT * FROM appointment_history
-ORDER BY appointment_id;
+ORDER BY appointment_id ASC;
