@@ -33,7 +33,7 @@ order by appointment_id;
 CREATE OR REPLACE FUNCTION appointment_history_trigger()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF trigger_operation = 'INSERT' OR 'UPDATE' THEN
+	IF TG_OP = 'INSERT' OR TG_OP ='UPDATE' THEN
 		INSERT INTO appointment_history(
 		    update_type, updated_at,
 		    appointment_id, scheduled_for, patient_concern,
@@ -46,7 +46,7 @@ BEGIN
 		    lab_id, patient_vitals_id, medicine_id
 		)
 		SELECT 
-			CASE WHEN trigger_operation = 'INSERT' THEN 'NEW INSERT' ELSE 'UPDATE' END AS update_type,
+			CASE WHEN TG_OP = 'INSERT' THEN 'NEW INSERT' ELSE 'UPDATE' END AS update_type,
             CURRENT_TIMESTAMP, a.appointment_id, a.scheduled_for, a.patient_concern, a.appointment_type_id,
             at.type AS appointment_type, p.patient_id, per.first_name, per.last_name, d.doctor_id,
             doc_person.first_name, doc_person.last_name, h.hospital_id,h.name,
@@ -70,7 +70,7 @@ BEGIN
         LEFT JOIN medicine m ON pr.medicine_id = m.medicine_id
         WHERE a.appointment_id = NEW.appointment_id;
         RETURN NEW;
-	ELSEIF trigger_operation = 'DELETE' THEN
+	ELSEIF TG_OP = 'DELETE' THEN
 		INSERT INTO appointment_history(
 		    update_type, updated_at,
 		    appointment_id, scheduled_for, patient_concern,
@@ -120,6 +120,63 @@ FOR EACH ROW
 EXECUTE FUNCTION appointment_history_trigger();
 
 
---test case: insert
+--i. test case: insert
+SELECT * FROM Appointment ORDER BY appointment_id DESC;
+SELECT * FROM appointment_history ORDER BY appointment_history_id DESC;
 
+INSERT INTO appointment (appointment_id, appointment_type_id, hospital_id, created_at, scheduled_for, patient_concern, 
+patient_vitals_id, patient_id, doctor_id, lab_id, appointment_status_id)
+VALUES(612, 1, 21, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Yearly checkups.', 4, 54, 7, 103, 4);
 
+--ii. test case: update
+SELECT * FROM Appointment ORDER BY appointment_id DESC;
+SELECT * FROM appointment_history ORDER BY appointment_history_id DESC;
+
+UPDATE appointment
+SET scheduled_for = '2025-07-25 08:45:00'
+WHERE appointment_id = 612;
+
+--iii. test case: delete
+DELETE FROM appointment
+WHERE appointment_id = 611
+AND date_part('year', scheduled_for) = '2023';
+
+ALTER TABLE appointment_history
+DROP CONSTRAINT appointment_history_appointment_id_fkey;
+
+--to test if the deletion worked
+SELECT * FROM appointment
+WHERE appointment_id = 611;
+
+--to test if the deletion updated the history table
+SELECT * FROM appointment_history ORDER BY appointment_history_id DESC;
+
+--it didn't update so let's insert this record back
+INSERT INTO appointment (appointment_id, appointment_type_id, hospital_id, created_at, scheduled_for, patient_concern, patient_vitals_id, patient_id, doctor_id, lab_id, appointment_status_id)
+VALUES(611, 1, 21, '2023-06-21 09:45:00', '2023-06-29 10:15:00', 'The patient has a persistent cough and difficulty breathing.', 4, 54, 7, 103, 4);
+
+--dropped the first trigger I wrote
+DROP TRIGGER IF EXISTS trigger_appointment_history ON appointment;
+
+--separated triggers
+CREATE TRIGGER trg_appointment_history_after
+AFTER INSERT OR UPDATE ON appointment
+FOR EACH ROW 
+EXECUTE FUNCTION appointment_history_trigger();
+
+CREATE TRIGGER trg_appointment_history_before_delete
+BEFORE DELETE ON appointment
+FOR EACH ROW 
+EXECUTE FUNCTION appointment_history_trigger();
+
+--ran the delete query again
+DELETE FROM appointment
+WHERE appointment_id = 611
+AND date_part('year', scheduled_for) = '2023';
+
+--ran this again and deletion worked here
+SELECT * FROM appointment
+WHERE appointment_id = 611;
+
+--ran this to check history table and history table also has DELETE record now.
+SELECT * FROM appointment_history ORDER BY appointment_history_id DESC;
