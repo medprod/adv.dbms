@@ -6,6 +6,7 @@ SELECT * FROM hospital;
 SELECT * FROM employee;
 SELECT * FROM department;
 
+
 --general query to check which doctor belongs to which hospital
 SELECT d.doctor_id, e.employee_id,
 dep.department_id, h.hospital_id, h.name
